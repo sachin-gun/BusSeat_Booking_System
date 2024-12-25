@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { userServiceDB } = require('../db'); // Import the user_serviceDB connection
+const { routeServiceDB, useDatabase } = require('..//config//db'); // Import the route_serviceDB connection
 
 const UserSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
@@ -12,4 +12,7 @@ const UserSchema = new mongoose.Schema({
 });
 
 // Use the userServiceDB connection for the User model
-module.exports = userServiceDB.model('User', UserSchema);
+const userServiceDB = useDatabase('user_service')
+const User = userServiceDB.model('User', UserSchema);
+
+module.exports = User;
