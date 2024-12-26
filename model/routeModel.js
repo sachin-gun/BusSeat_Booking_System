@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
-const { routeServiceDB, useDatabase } = require('..//config//db'); // Import the route_serviceDB connection
+const { useDatabase } = require('..//config//db'); // Import the route_serviceDB connection
 
 const RouteSchema = new mongoose.Schema({
-    routeId: { type: String, required: true, unique: true },
     routeNo: { type: String, required: true },
     from: { type: String, required: true },
     to: { type: String, required: true },
@@ -12,7 +11,7 @@ const RouteSchema = new mongoose.Schema({
 });
 
 // Use the routeServiceDB connection for the Route model
-const busServiceDB = useDatabase('bus_service')
-const Bus = busServiceDB.model('Route', RouteSchema);
+const routeServiceDB = useDatabase('route_service')
+const Route = routeServiceDB.model('Route', RouteSchema);
 
-module.exports = Bus;
+module.exports = Route;

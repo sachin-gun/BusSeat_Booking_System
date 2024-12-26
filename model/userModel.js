@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { routeServiceDB, useDatabase } = require('..//config//db'); // Import the route_serviceDB connection
+const { useDatabase } = require('..//config//db'); // Import the route_serviceDB connection
 
 const UserSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },

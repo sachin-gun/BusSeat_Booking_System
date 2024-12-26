@@ -14,7 +14,7 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ['./routes/*.js'], // Path to the files containing API documentation comments
+  apis: ['./routes/*.js', './models/*.js'], // Include the paths to your routes and models
 };
 
 // Generate Swagger documentation
