@@ -38,6 +38,10 @@ app.use('/api/users', userRoutes);
 const busRoutes = require('./routes//busRoutes');
 app.use('/api/buses',busRoutes)
 
+// Add the permit routes
+const permitRoutes = require('./routes//permitRoutes');
+app.use('/api/permits', permitRoutes);
+
 // Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

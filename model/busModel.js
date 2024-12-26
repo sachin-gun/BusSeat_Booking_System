@@ -9,8 +9,18 @@ const BusSchema = new mongoose.Schema({
     busOperatorId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     status: { type: String, enum: ['available', 'maintenance', 'unavailable'], required: true },
     permitNo: { type: String },
-    permitStatus: { type: String, enum: ['pending', 'approved'], default: 'pending' }
+    permitStatus: { type: String, enum: ['pending', 'approved'], default: 'pending' },
+    availableSeats: { type: [Number], default: [] }, // Array to store available seat numbers
 });
+
+// Automatically initialize availableSeats based on noOfSeats
+BusSchema.pre('save', function (next) {
+    if (this.isNew) {
+        this.availableSeats = Array.from({ length: this.noOfSeats }, (_, i) => i + 1); // Generate seat numbers 1 to noOfSeats
+    }
+    next();
+});
+
 
 // Use the busServiceDB connection for the Bus model
 const busServiceDB = useDatabase('bus_service')

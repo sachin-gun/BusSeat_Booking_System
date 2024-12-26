@@ -7,7 +7,7 @@ const TripSchema = new mongoose.Schema({
     from: { type: String, required: true },
     to: { type: String, required: true },
     routeNo: { type: String, required: true },
-    licensePlate: { type: mongoose.Schema.Types.ObjectId, ref: 'Bus', required: true },
+    busId: { type: mongoose.Schema.Types.ObjectId, ref: 'Bus', required: true },
     seatsAvailable: { type: Number, required: true },
     ticketPrice: { type: Number, required: true }
 });

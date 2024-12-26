@@ -6,11 +6,11 @@ const router = express.Router();
  * @swagger
  * /buses:
  *   get:
- *     summary: Retrieve all buses
+ *     summary: Retrieve all Buses
  *     tags: [Buses]
  *     responses:
  *       200:
- *         description: List of all buses
+ *         description: List of all Buses
  *         content:
  *           application/json:
  *             schema:
