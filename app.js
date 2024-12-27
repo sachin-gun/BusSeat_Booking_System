@@ -40,7 +40,7 @@ const busOpertorRoutes = require('./routes//busOperatorRoutes');
 app.use('/api', busOpertorRoutes);
 
 const busRoutes = require('./routes//busRoutes');
-app.use('/api/buses',busRoutes)
+app.use('/api',busRoutes)
 
 // Add the permit routes
 const permitRoutes = require('./routes//permitRoutes');
