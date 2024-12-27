@@ -56,6 +56,12 @@ app.use("/api",scheduleRoutes);
 const bookingRoutes = require("./routes/bookingRoutes");
 app.use("/api",bookingRoutes);
 
+
+// payment routes
+const paymentRoutes = require("./routes/paymentRoutes");
+app.use("/api",paymentRoutes);
+
+
 // Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
