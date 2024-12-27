@@ -1,18 +1,19 @@
 const Permit = require('../model//permitModel');
 const Bus = require('../model/busModel');
 const mongoose = require('mongoose');
-
+const Route = require("../model/routeModel");
 
 /**
  * Search Permits
  */
 exports.searchPermits = async (req, res) => {
     try {
-        const { bus_id, operator_id, permit_status } = req.body;
+        const { route_id, bus_id, operator_id, permit_status } = req.body;
 
         // Build dynamic query
         const query = {};
         if (bus_id) query.bus_id = bus_id;
+        if (route_id) query.route_id = route_id;
         if (operator_id) query.operator_id = operator_id;
         if (permit_status) query.permit_status = permit_status;
 
@@ -34,7 +35,7 @@ exports.searchPermits = async (req, res) => {
  */
 exports.createPermit = async (req, res) => {
     try {
-        const { bus_id, operator_id, comments } = req.body;
+        const { bus_id, operator_id, comments,route_id } = req.body;
 
         // Validate inputs
         const errors = [];
@@ -44,12 +45,20 @@ exports.createPermit = async (req, res) => {
         if (!operator_id || !mongoose.Types.ObjectId.isValid(operator_id)) {
             errors.push('Operator ID must be a valid MongoDB ObjectId.');
         }
+        if (!route_id || !mongoose.Types.ObjectId.isValid(route_id)) {
+            errors.push('Route ID must be a valid MongoDB ObjectId.');
+        }
 
         const bus = await Bus.findById(bus_id);
         if (!bus) {
             errors.push('Bus not found.');
         } else if (bus.operator_id.toString() !== operator_id) {
             errors.push('Bus does not belong to the specified operator.');
+        }
+
+        const route = await Route.findById(route_id);
+        if (!route) {
+            errors.push('Route not found.');
         }
 
         if (errors.length > 0) {
@@ -102,7 +111,7 @@ exports.updatePermitStatus = async (req, res) => {
                  return res.status(400).json({
                      message: 'Another active permit already exists for this bus.',
                      error : [
-                        'Another active permit already exists for this bus.'
+                        
                      ] 
                  });
              }

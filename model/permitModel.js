@@ -4,6 +4,7 @@ const { useDatabase } = require('../config/db');
 const PermitSchema = new mongoose.Schema({
     bus_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Bus', required: true }, 
     operator_id: { type: mongoose.Schema.Types.ObjectId, ref: 'BusOperator', required: true }, 
+    route_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Route', required: true }, // Reference to Route
     permit_status: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' }, // Current permit status
     requested_at: { type: Date, default: Date.now }, // Timestamp for when the permit was requested
     approved_at: { type: Date }, // Timestamp for approval (if approved)
