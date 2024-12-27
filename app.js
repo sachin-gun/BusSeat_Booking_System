@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
 
 // API Routes
 const routeRoutes = require('./routes/routeRoutes');
-app.use('/api/routes', routeRoutes);
+app.use('/api', routeRoutes);
 
 // user routes
 const userRoutes = require('./routes//userRoutes');
