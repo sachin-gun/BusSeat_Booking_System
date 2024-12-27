@@ -4,12 +4,11 @@ const { tripServiceDB } = require('../db'); // Import the trip_serviceDB connect
 const TripSchema = new mongoose.Schema({
     tripId: { type: String, required: true, unique: true },
     routeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Route', required: true },
-    from: { type: String, required: true },
-    to: { type: String, required: true },
-    routeNo: { type: String, required: true },
     busId: { type: mongoose.Schema.Types.ObjectId, ref: 'Bus', required: true },
     seatsAvailable: { type: Number, required: true },
-    ticketPrice: { type: Number, required: true }
+    ticketPrice: { type: Number, required: true },
+    startTime: { type: Date, required: true },
+    endTime: { type: Date, required: true }
 });
 
 // Use the tripServiceDB connection for the Trip model

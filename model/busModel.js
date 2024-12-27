@@ -7,7 +7,7 @@ const BusSchema = new mongoose.Schema({
     noOfSeats: { type: Number, required: true },
     busType: { type: String, enum: ['luxury', 'semi_luxury', 'normal'], required: true },
     busOperatorId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    status: { type: String, enum: ['available', 'maintenance', 'unavailable'], required: true },
+    status: { type: String, enum: ['available', 'maintenance', 'unavailable'], default: 'available' },
     permitNo: { type: String },
     permitStatus: { type: String, enum: ['pending', 'approved'], default: 'pending' },
     availableSeats: { type: [Number], default: [] }, // Array to store available seat numbers

@@ -12,10 +12,10 @@ const getAllRoutes = async (req, res) => {
 
 // Create a new route
 const createRoute = async (req, res) => {
-    const { routeId, routeNo, from, to, avgMinutes, startTime, endTime } = req.body; // Destructure the required fields
+    const { routeId, routeNo, from, to, avgMinutes, } = req.body; // Destructure the required fields
     try {
         // Create a new Route document
-        const route = new Route({ routeId, routeNo, from, to, avgMinutes, startTime, endTime });
+        const route = new Route({ routeId, routeNo, from, to, avgMinutes,  });
         
         // Save to the database
         await route.save();

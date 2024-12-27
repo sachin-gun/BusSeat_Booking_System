@@ -17,7 +17,7 @@ const createBus = async(req, res) => {
     try {
         const bus = new Bus({ busNumber, route, seatCount, schedule,busType,busOperatorId,status,noOfSeats,licensePlate });
         await bus.save();
-        res.status(201).send('Bus created');
+        res.status(201).json({ message: "Bus Created" });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
