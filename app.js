@@ -52,6 +52,10 @@ app.use('/api', permitRoutes);
 const scheduleRoutes = require("./routes/scheduleRoutes");
 app.use("/api",scheduleRoutes);
 
+// booking routes
+const bookingRoutes = require("./routes/bookingRoutes");
+app.use("/api",bookingRoutes);
+
 // Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
