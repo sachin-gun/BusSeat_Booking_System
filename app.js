@@ -32,8 +32,12 @@ app.get('/', (req, res) => {
 const routeRoutes = require('./routes/routeRoutes');
 app.use('/api/routes', routeRoutes);
 
+// user routes
 const userRoutes = require('./routes//userRoutes');
 app.use('/api', userRoutes);
+
+const busOpertorRoutes = require('./routes//busOperatorRoutes');
+app.use('/api', busOpertorRoutes);
 
 const busRoutes = require('./routes//busRoutes');
 app.use('/api/buses',busRoutes)

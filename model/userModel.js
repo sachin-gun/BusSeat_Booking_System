@@ -76,7 +76,7 @@ UserSchema.statics.findByRole = function (role) {
     return this.find({ role });
 };
 
-const userServiceDB = useDatabase('user_service')
+const userServiceDB = useDatabase('bus_seat_booking_service')
 const User = userServiceDB.model('User', UserSchema);
 
 
