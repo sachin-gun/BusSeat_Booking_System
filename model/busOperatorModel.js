@@ -10,7 +10,6 @@ const BusOperatorSchema = new mongoose.Schema({
     buses: [
         {
             bus_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Bus' }, // Reference to the Bus model
-            permit_status: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' },
         }
     ],
     created_at: { type: Date, default: Date.now },
