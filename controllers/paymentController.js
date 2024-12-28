@@ -91,9 +91,6 @@ exports.updatePayment = async (req, res) => {
 
         // Validate updates
         const errors = [];
-        if (updates.amount && (typeof updates.amount !== 'number' || updates.amount <= 0)) {
-            errors.push('Amount must be a valid positive number.');
-        }
         if (updates.status && !['pending', 'paid', 'failed', 'refunded'].includes(updates.status)) {
             errors.push('Invalid payment status.');
         }
