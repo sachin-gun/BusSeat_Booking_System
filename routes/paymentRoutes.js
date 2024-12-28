@@ -11,7 +11,5 @@ router.get('/payments', paymentController.searchPayments);
 // Update a payment
 router.put('/payments/:id', paymentController.updatePayment);
 
-// Delete a payment
-router.delete('/payments/:id', paymentController.deletePayment);
 
 module.exports = router;
