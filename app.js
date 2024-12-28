@@ -30,17 +30,37 @@ app.get('/', (req, res) => {
 
 // API Routes
 const routeRoutes = require('./routes/routeRoutes');
-app.use('/api/routes', routeRoutes);
+app.use('/api', routeRoutes);
 
+// user routes
 const userRoutes = require('./routes//userRoutes');
-app.use('/api/users', userRoutes);
+app.use('/api', userRoutes);
 
+// bus operator routes
+const busOpertorRoutes = require('./routes//busOperatorRoutes');
+app.use('/api', busOpertorRoutes);
+
+// bus routes
 const busRoutes = require('./routes//busRoutes');
-app.use('/api/buses',busRoutes)
+app.use('/api',busRoutes)
 
-// Add the permit routes
+// permit routes
 const permitRoutes = require('./routes//permitRoutes');
-app.use('/api/permits', permitRoutes);
+app.use('/api', permitRoutes);
+
+// schedule routes
+const scheduleRoutes = require("./routes/scheduleRoutes");
+app.use("/api",scheduleRoutes);
+
+// booking routes
+const bookingRoutes = require("./routes/bookingRoutes");
+app.use("/api",bookingRoutes);
+
+
+// payment routes
+const paymentRoutes = require("./routes/paymentRoutes");
+app.use("/api",paymentRoutes);
+
 
 // Start the server
 const PORT = process.env.PORT || 5000;
