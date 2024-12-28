@@ -11,7 +11,6 @@ const PaymentSchema = new mongoose.Schema({
     }, // Payment status
     payment_method: { type: String, required: true, trim: true }, // Payment method (e.g., "credit_card", "paypal")
     transaction_reference: { type: String, required: true, unique: true, trim: true }, // Unique payment transaction reference
-    metadata: { type: Object, default: {} }, // Optional additional data (e.g., provider-specific details)
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now }
 });
