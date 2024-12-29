@@ -33,19 +33,19 @@ const routeRoutes = require('./routes/routeRoutes');
 app.use('/api', routeRoutes);
 
 // user routes
-const userRoutes = require('./routes//userRoutes');
+const userRoutes = require('./routes/userRoutes');
 app.use('/api', userRoutes);
 
 // bus operator routes
-const busOpertorRoutes = require('./routes//busOperatorRoutes');
+const busOpertorRoutes = require('./routes/busOperatorRoutes');
 app.use('/api', busOpertorRoutes);
 
 // bus routes
-const busRoutes = require('./routes//busRoutes');
+const busRoutes = require('./routes/busRoutes');
 app.use('/api',busRoutes)
 
 // permit routes
-const permitRoutes = require('./routes//permitRoutes');
+const permitRoutes = require('./routes/permitRoutes');
 app.use('/api', permitRoutes);
 
 // schedule routes
