@@ -92,20 +92,21 @@ exports.updateRoute = async (req, res) => {
  */
 exports.searchRoutes = async (req, res) => {
     try {
-        const { route_name, start_point, end_point, status } = req.body;
+        const { search_query } = req.query;
 
-        // Build dynamic query
-        const query = {};
-        if (route_name) query.route_name = new RegExp(route_name, 'i'); // Case-insensitive match
-        if (start_point) query.start_point = new RegExp(start_point, 'i');
-        if (end_point) query.end_point = new RegExp(end_point, 'i');
-        if (status) query.status = status;
+       // Build dynamic query
+       const query = {};
+
+       if (search_query) {
+           query.$or = [
+               { route_name: new RegExp(search_query, 'i') }, // Case-insensitive match
+               { start_point: new RegExp(search_query, 'i') },
+               { end_point: new RegExp(search_query, 'i') }
+           ];
+       }
 
         // Search routes
         const routes = await Route.find(query);
-        if (routes.length === 0) {
-            return res.status(404).json({ message: 'No routes found.', data: [] });
-        }
 
         res.status(200).json({ message: 'Routes retrieved successfully.', routes });
     } catch (error) {
@@ -132,6 +133,28 @@ exports.deleteRoute = async (req, res) => {
         }
 
         res.status(200).json({ message: 'Route deleted successfully.', route: deletedRoute });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error.', error: error.message });
+    }
+};
+
+
+exports.getBusOperatorById = async (req, res) => {
+    try {
+        const { id } = req.query;
+
+        // Validate the ID
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: 'Invalid Bus Operator ID.' });
+        }
+
+        // Find the bus operator and populate the associated user
+        const route = await Route.findById(id);
+        if (!route) {
+            return res.status(404).json({ message: 'Bus operator not found.' });
+        }
+
+        res.status(200).json({ message: 'Bus operator retrieved successfully.', route });
     } catch (error) {
         res.status(500).json({ message: 'Server error.', error: error.message });
     }

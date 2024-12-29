@@ -58,6 +58,16 @@ exports.createUser = async (req, res) => {
                 ]});
         }
 
+
+         // Check if user already exists
+         const existingEmailUser = await User.findOne({ email });
+         if (existingEmailUser) {
+             return res
+                 .status(400)
+                 .json({ message: 'System Error' ,error: [
+                     "User already exists with this email."
+                 ]});
+         }
         // Create user
         const user = new User({
             name: name.trim(),
@@ -68,7 +78,7 @@ exports.createUser = async (req, res) => {
         });
         await user.save();
 
-        res.status(201).json({ message: 'User created successfully.', user });
+        res.status(201).json({ message: 'User created successfully, Please login', user });
     } catch (error) {
         res.status(500).json({ message: 'Server error.', error: error });
     }

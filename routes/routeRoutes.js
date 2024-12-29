@@ -14,4 +14,7 @@ router.put('/routes/:id', routeController.updateRoute);
 // Delete a route
 router.delete('/routes/:id', routeController.deleteRoute);
 
+// list
+router.get('/route', routeController.getBusOperatorById);
+
 module.exports = router;

@@ -1,17 +1,18 @@
 const Bus = require('../model//busModel');
 const BusOperator = require('../model//busOperatorModel');
 const mongoose = require('mongoose');
+const User = require('../model/userModel');
 
 /**
  * Create a new Bus
  */
 exports.createBus = async (req, res) => {
     try {
-        const { operator_id, bus_number, seats_count } = req.body;
+        const { operatorId, bus_number, seats_count } = req.body;
 
         // Validate inputs
         const errors = [];
-        if (!operator_id || !mongoose.Types.ObjectId.isValid(operator_id)) {
+        if (!operatorId || !mongoose.Types.ObjectId.isValid(operatorId)) {
             errors.push('Operator ID must be a valid MongoDB ObjectId.');
         }
         if (!bus_number || typeof bus_number !== 'string' || bus_number.trim().length < 1) {
@@ -22,8 +23,8 @@ exports.createBus = async (req, res) => {
         }
 
         // Check if operator exists
-        const operator = await BusOperator.findById(operator_id);
-        if (!operator) {
+        const busOperator = await BusOperator.findOne({ user_id: operatorId })
+        if (!busOperator) {
             errors.push('Operator not found.');
         }
 
@@ -33,24 +34,25 @@ exports.createBus = async (req, res) => {
             errors.push('Bus number is already in use.');
         }
 
+        
         if (errors.length > 0) {
             return res.status(400).json({ message: 'Validation errors.', errors });
         }
 
         // Create new bus
         const newBus = new Bus({
-            operator_id,
+            operator_id: busOperator._id,
             bus_number: bus_number.trim(),
             seats_count,
         });
         await newBus.save();
 
         // Add the new bus to the operator's buses array
-        operator.buses.push({
+        busOperator.buses.push({
             bus_id: newBus._id,
             permit_status: newBus.permit_status,
         });
-        await operator.save();
+        await busOperator.save();
 
         res.status(201).json({ message: 'Bus created successfully.', bus: newBus });
     } catch (error) {
@@ -148,6 +150,27 @@ exports.deleteBus = async (req, res) => {
         }
 
         res.status(200).json({ message: 'Bus deleted successfully.', bus: deletedBus });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error.', error: error.message });
+    }
+};
+
+exports.getBusById = async (req, res) => {
+    try {
+        const { id } = req.query;
+
+        // Validate the ID
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: 'Invalid Bus ID.' });
+        }
+
+        // Find the bus operator and populate the associated user
+        const bus = await Bus.findById(id);
+        if (!bus) {
+            return res.status(404).json({ message: 'Bus not found.' });
+        }
+
+        res.status(200).json({ message: 'Bus retrieved successfully.', route });
     } catch (error) {
         res.status(500).json({ message: 'Server error.', error: error.message });
     }
