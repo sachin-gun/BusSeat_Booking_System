@@ -106,24 +106,22 @@ exports.updateBus = async (req, res) => {
  */
 exports.searchBuses = async (req, res) => {
     try {
-        const { operator_id, bus_number, status } = req.body;
+        const { search_query } = req.query;
 
         // Build dynamic query
         const query = {};
-        if (operator_id && mongoose.Types.ObjectId.isValid(operator_id)) {
-            query.operator_id = operator_id;
+        
+        // Check if search_query is provided
+        if (search_query) {
+            query.$or = [
+                { operator_id: mongoose.Types.ObjectId.isValid(search_query) ? search_query : undefined }, // Matches operator_id if valid
+                { bus_number: new RegExp(search_query, 'i') }, // Case-insensitive match for bus_number
+                { status: new RegExp(search_query, 'i') } // Case-insensitive match for status
+            ].filter(Boolean); // Remove undefined entries
         }
-        if (bus_number) {
-            query.bus_number = new RegExp(bus_number, 'i'); // Case-insensitive match
-        }
-        if (status) {
-            query.status = status;
-        }
+        
 
         const buses = await Bus.find(query).populate('operator_id');
-        if (buses.length === 0) {
-            return res.status(404).json({ message: 'No buses found.', data: [] });
-        }
 
         res.status(200).json({ message: 'Buses retrieved successfully.', buses });
     } catch (error) {
@@ -170,7 +168,7 @@ exports.getBusById = async (req, res) => {
             return res.status(404).json({ message: 'Bus not found.' });
         }
 
-        res.status(200).json({ message: 'Bus retrieved successfully.', route });
+        res.status(200).json({ message: 'Bus retrieved successfully.', bus });
     } catch (error) {
         res.status(500).json({ message: 'Server error.', error: error.message });
     }

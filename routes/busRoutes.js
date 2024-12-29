@@ -8,6 +8,6 @@ router.get('/buses',authenticate, authorize(['admin','bus_operator']), busContro
 router.post('/buses',authenticate, authorize(['admin','bus_operator']), busController.createBus);
 router.put('/buses/:id',authenticate, authorize(['admin','bus_operator']), busController.updateBus);
 router.delete('/buses/:id',authenticate, authorize(['admin','bus_operator']), busController.deleteBus);
-router.get('/buses',authenticate, authorize(['admin','bus_operator']), busController.getBusById);
+router.get('/bus',authenticate, authorize(['admin','bus_operator']), busController.getBusById);
 
 module.exports = router;
