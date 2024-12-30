@@ -13,6 +13,11 @@ router.post('/schedules',authenticate, authorize(['admin']),  scheduleController
 router.put('/schedules/:id', authenticate, authorize(['admin']), scheduleController.updateSchedule);
 
 // Delete a schedule
-router.delete('/schedules/:id',authenticate, authorize(['admin']), scheduleController.deleteSchedule);
+router.delete('/schedules', authenticate, authorize(['admin']), scheduleController.deleteSchedule);
+
+// get data by Id
+router.get('/schedule', authenticate, authorize(['admin']), scheduleController.getScheduleById);
+
+router.get('/schedule-by-points',authenticate,authorize(['admin']),scheduleController.getSchedulesByPoints);
 
 module.exports = router;

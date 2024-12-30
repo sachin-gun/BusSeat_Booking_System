@@ -1,5 +1,6 @@
 const Schedule = require('../model//scheduleModel');
 const mongoose = require('mongoose');
+const Route = require('../model/routeModel');
 
 /**
  * Create a new Schedule
@@ -116,11 +117,11 @@ exports.updateSchedule = async (req, res) => {
  */
 exports.deleteSchedule = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { id } = req.query;
 
         // Validate ID
         if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).json({ message: 'Invalid Schedule ID.' });
+            return res.status(400).json({ message: 'Invalid Schedule ID.' +id});
         }
 
         // Delete schedule
@@ -134,3 +135,74 @@ exports.deleteSchedule = async (req, res) => {
         res.status(500).json({ message: 'Server error.', error: error.message });
     }
 };
+
+
+exports.getScheduleById = async (req, res) => {
+    try {
+        const { id } = req.query;
+
+        // Validate the ID
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: 'Invalid Schedule ID.' });
+        }
+
+        // Find the bus operator and populate the associated user
+        const schedule = await Schedule.findById(id).populate('route_id').populate('bus_id');
+        if (!schedule) {
+            return res.status(404).json({ message: 'Schedule not found.' });
+        }
+
+        res.status(200).json({ message: 'Schedule retrieved successfully.', schedule });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error.', error: error.message });
+    }
+};
+
+
+/**
+ * Fetch active and future schedules for a specific route
+ */
+exports.getSchedulesByPoints = async (req, res) => {
+    try {
+        const { start_point, end_point } = req.query;
+
+        // Validate input
+        if (!start_point || !end_point) {
+            return res.status(400).json({
+                message: 'Start point and end point are required.',
+            });
+        }
+
+        // Find route IDs matching the start and end points
+        const routes = await Route.find({
+            start_point: start_point.trim(),
+            end_point: end_point.trim(),
+        }).select('_id');
+
+    
+
+        const routeIds = routes.map((route) => route._id);
+
+        // Fetch active and future schedules for the routes
+        const now = new Date();
+        const schedules = await Schedule.find({
+            route_id: { $in: routeIds },
+            start_time: { $gte: now }, // Future schedules
+            status: { $in: ['active', 'inactive'] }, // Active or inactive
+        })
+            .populate('route_id', 'route_name start_point end_point') // Include route details
+            .populate('bus_id', 'bus_number seats_count status') // Include bus details
+            .sort({ start_time: 1 });
+
+        res.status(200).json({
+            message: 'Schedules retrieved successfully.',
+            schedules,
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: 'Server error.',
+            error: error.message,
+        });
+    }
+};
+

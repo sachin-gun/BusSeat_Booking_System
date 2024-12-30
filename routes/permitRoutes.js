@@ -12,4 +12,10 @@ router.put('/permits/:id', authenticate, authorize(['admin','bus_operator']),per
 // Route to search permits
 router.get('/permits', authenticate, authorize(['admin','bus_operator']),permitController.searchPermits);
 
+// get data by Id
+router.get('/permit', authenticate, authorize(['admin']), permitController.getPermitById);
+
+// delete
+router.delete('/permits',authenticate, authorize(['admin','bus_operator']), permitController.deletePermit);
+
 module.exports = router;

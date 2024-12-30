@@ -1,3 +1,4 @@
+const Booking = require('../model/bookingModel');
 const Payment = require('../model/paymentModel');
 const mongoose = require('mongoose');
 
@@ -27,6 +28,13 @@ exports.createPayment = async (req, res) => {
             return res.status(400).json({ message: 'Validation errors.', errors });
         }
 
+          // Check if booking exists
+        const booking = await Booking.findById(booking_id);
+        if (!booking) {
+              return res.status(404).json({ message: 'Booking not found.' });
+         }
+
+
         // Check for duplicate transaction reference
         const existingPayment = await Payment.findByTransactionReference(transaction_reference);
         if (existingPayment) {
@@ -35,16 +43,29 @@ exports.createPayment = async (req, res) => {
             ] });
         }
 
+        
+
         // Create the payment
         const newPayment = new Payment({
             booking_id,
             amount,
+            status : "paid",
             payment_method,
             transaction_reference,
             metadata,
         });
 
+        
         await newPayment.save();
+
+
+         // Update booking status to confirmed and payment_status to paid
+         booking.status = 'confirmed';
+         booking.payment_status = 'paid';
+         booking.payment_reference = transaction_reference; // Optionally store the transaction reference
+         await booking.save();
+
+
         res.status(201).json({ message: 'Payment created successfully.', payment: newPayment });
     } catch (error) {
         res.status(500).json({ message: 'Server error.', error: error.message });
