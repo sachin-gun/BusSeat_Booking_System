@@ -12,7 +12,11 @@ dotenv.config();
 const app = express();
 
 // Enable CORS for all routes
-app.use( cors());
+app.use( cors({
+  origin: "https://bus-seat-booking-system.vercel.app",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true,
+}));
 
 // Middleware
 app.use(express.json()); // Parse JSON requests
