@@ -13,7 +13,7 @@ const app = express();
 
 // Enable CORS for all routes
 app.use( cors({
-  origin: "https://bus-seat-booking-system-frontend-kumbp8i8i-sachin-guns-projects.vercel.app",
+  origin: "https://bus-seat-booking-system-frontend.vercel.app",
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 }));
