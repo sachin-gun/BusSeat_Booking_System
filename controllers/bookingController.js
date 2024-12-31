@@ -179,7 +179,7 @@ exports.getUniquePoints = async (req, res) => {
     }
 };
 
-const stripe = require('stripe')('sk_test_51QbpVd08WMagMX2E2HgtcaGNCqVDvmSoUXSgQhsfrUBcG4KUFCWaVUcJIZx29oQBje6iW1sMePHXnNaRyh0CvfL800lfnfBEJ8'); // Replace with your Stripe secret key
+const stripe = require('stripe')('sk_test_51Qbpu8BI3ddYlsnR8YnaoorfNHzGqTlhXVjmNLRDaQqli2HCZYM9sWde8fReVh4lhLdGqFRRNTNMsVwgmls30Y4600gz3DOkRy'); // Replace with your Stripe secret key
 
 /**
  * Create a payment intent
