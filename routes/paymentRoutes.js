@@ -1,17 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const paymentController = require('../controllers/paymentController');
+const { authenticate, authorize } = require('../middleware/authMiddleware');
 
 // Create a new payment
-router.post('/payments', paymentController.createPayment);
+router.post('/payments',authenticate, authorize(['customer']), paymentController.createPayment);
 
 // Search payments
-router.get('/payments', paymentController.searchPayments);
+router.get('/payments', authenticate, authorize(['customer']),paymentController.searchPayments);
 
 // Update a payment
-router.put('/payments/:id', paymentController.updatePayment);
+router.put('/payments/:id', authenticate, authorize(['customer']),paymentController.updatePayment);
 
-// Delete a payment
-router.delete('/payments/:id', paymentController.deletePayment);
 
 module.exports = router;

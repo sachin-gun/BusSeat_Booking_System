@@ -69,6 +69,7 @@ exports.createPermit = async (req, res) => {
         const newPermit = new Permit({
             bus_id,
             operator_id,
+            route_id,
             comments,
         });
         await newPermit.save();
@@ -135,6 +136,60 @@ exports.updatePermitStatus = async (req, res) => {
         }
 
         res.status(200).json({ message: 'Permit status updated successfully.', permit });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error.', error: error.message });
+    }
+};
+
+exports.getPermitById = async (req, res) => {
+    try {
+        const { id } = req.query;
+        // Validate the ID
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: 'Invalid Permit ID.' });
+        }
+
+        // Find the Permit 
+        const permit = await Permit.findById(id)
+            .populate({
+                path: 'bus_id',
+                select: 'bus_number seats_count status', 
+            })
+            .populate({
+                path: 'route_id',
+                select: 'route_name start_point end_point distance status', 
+            });
+
+        if (!permit) {
+            return res.status(404).json({ message: 'Permit not found.' });
+        }
+
+        res.status(200).json({ message: 'Permit retrieved successfully.', permit });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error.', error: error.message });
+    }
+};
+
+
+/**
+ * Delete a Permit
+ */
+exports.deletePermit = async (req, res) => {
+    try {
+        const { id } = req.query;
+
+        // Validate ID
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: 'Invalid Permit ID.' +id});
+        }
+
+        // Delete schedule
+        const deletedPermited = await Permit.findByIdAndDelete(id);
+        if (!deletedPermited) {
+            return res.status(404).json({ message: 'Permit not found.' });
+        }
+
+        res.status(200).json({ message: 'Permit deleted successfully.', permit: deletedPermited });
     } catch (error) {
         res.status(500).json({ message: 'Server error.', error: error.message });
     }
